@@ -1,0 +1,13 @@
+import { useMemo, useState } from "react";
+import { Eye, Filter, Search } from "lucide-react";
+import StatusBadge from "../components/StatusBadge";
+import { applications } from "../data/dummyData";
+
+export default function Applications({officer=false}) {
+  const [q,setQ]=useState(""); const [status,setStatus]=useState("All");
+  const list=useMemo(()=>applications.filter(a=>(status==="All"||a.status===status)&&Object.values(a).join(" ").toLowerCase().includes(q.toLowerCase())),[q,status]);
+  return <div><div><p className="text-sm font-bold text-blue-700">{officer?"Officer Portal":"Applicant Portal"}</p><h1 className="mt-1 text-3xl font-black">{officer?"Verification Applications":"My Applications"}</h1><p className="mt-1 text-sm text-slate-500">{officer?"Review and process submitted verification requests.":"View and monitor all your submitted requests."}</p></div>
+    <div className="card mt-7 overflow-hidden"><div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row"><div className="relative flex-1"><Search className="absolute left-3.5 top-3 text-slate-400" size={18}/><input className="input pl-11" value={q} onChange={e=>setQ(e.target.value)} placeholder="Search application, applicant, instrument..."/></div><div className="relative"><Filter className="pointer-events-none absolute left-3 top-3 text-slate-400" size={17}/><select className="input pl-10 sm:w-52" value={status} onChange={e=>setStatus(e.target.value)}><option>All</option><option>Pending</option><option>Approved</option><option>Rejected</option><option>Inspection Scheduled</option></select></div></div>
+    <div className="overflow-x-auto"><table className="w-full min-w-[850px] text-left text-sm"><thead className="bg-slate-50 text-xs uppercase text-slate-500"><tr><th className="px-5 py-3">Application ID</th><th className="px-5 py-3">Applicant</th><th className="px-5 py-3">Instrument</th><th className="px-5 py-3">District</th><th className="px-5 py-3">Date</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Action</th></tr></thead><tbody className="divide-y divide-slate-100">{list.map(a=><tr key={a.id} className="hover:bg-slate-50"><td className="px-5 py-4 font-bold">{a.id}</td><td className="px-5 py-4">{a.applicant}</td><td className="px-5 py-4 text-slate-600">{a.instrument}</td><td className="px-5 py-4 text-slate-500">{a.district}</td><td className="px-5 py-4 text-slate-500">{a.date}</td><td className="px-5 py-4"><StatusBadge status={a.status}/></td><td className="px-5 py-4"><button className="rounded-lg p-2 text-blue-700 hover:bg-blue-50"><Eye size={17}/></button></td></tr>)}</tbody></table></div></div>
+  </div>
+}

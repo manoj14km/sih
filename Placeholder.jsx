@@ -1,0 +1,1 @@
+export default function Placeholder({title,subtitle="This section is part of the SIH frontend prototype."}){return <div className="mx-auto max-w-3xl py-16 text-center"><div className="card p-10"><div className="mx-auto h-12 w-12 rounded-2xl bg-blue-50"/><h1 className="mt-5 text-2xl font-black">{title}</h1><p className="mt-2 text-sm text-slate-500">{subtitle}</p></div></div>}
